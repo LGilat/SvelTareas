@@ -1,6 +1,7 @@
-import './app.css'
+import  './app.css'
+
 // @ts-ignore
-import App from './App.svelte'
+import App from './App.svelte';
 
 const app = new App({
   target: document.getElementById('app'),
