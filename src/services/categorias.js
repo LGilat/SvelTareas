@@ -1,0 +1,1 @@
+export  const categorias=["tecnologia","informatica","Alimentacion","Seguros","Otros"];
