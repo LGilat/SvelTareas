@@ -1,6 +1,6 @@
 <script>
   // @ts-nocheck
-  import { Router, Link, Route} from "svelte-routing";
+  import { Router, Route} from "svelte-routing";
   import Navbar from "./components/Navbar.svelte";
   import Taskend from "./routes/taskend/Taskend.svelte";
   import Contact from "./components/Contact.svelte";
@@ -18,15 +18,15 @@
   <!-- Muestra el Navbar -->
   <Navbar />
 
-  <!-- Contenido de la página -->
-  <main>
+ 
     <!-- Define las rutas utilizando el componente Route -->
+    <Route path="/" component={Home} />
+    <Route path='/SvelTareas/' component={Home} />
     <Route path='/taskend' component={Taskend} />
     <Route path='/contact' component={Contact} />
-    <Route path="/" component={Home} />
     <Route path="/about" component={About} />
     <Route path="/policy" component={PolicyPrivacy} />
-  </main>
+ 
 
     <Footer />
 
@@ -34,4 +34,5 @@
 
 <style>
   
+
 </style>

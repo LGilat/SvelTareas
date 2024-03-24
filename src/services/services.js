@@ -120,6 +120,10 @@ export function updateTransaction(db, objstore, mode, tarea) {
         tareaEncontrada.categoria = tarea.categoria;
         tareaEncontrada.prioridad = tarea.prioridad;
 
+        if (tarea.descripcion){
+          tareaEncontrada.descripcion = tarea.descripcion;
+        }
+
         let updateRequest = store.put(tareaEncontrada);
         updateRequest.onsuccess = function () {
           accionCompletada("Tarea modificada con éxito");

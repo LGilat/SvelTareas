@@ -47,7 +47,7 @@
         </div>
         <div class="sm:w-1/2 p-10 ml-10 ">
           <div class="image object-center text-center ">
-              <img src="src/assets/02_us.jpeg"  class="ml-11" alt='grupo informáticos'>
+              <img src="/src/assets/02_us.jpeg"  class="ml-11" alt='grupo informáticos'>
           </div>
       </div>
     </div>
@@ -61,7 +61,7 @@
       <div class="sm:flex items-center max-w-screen-xl">
         <div class="sm:w-1/2 p-10  ">
           <div class="image object-center text-center ">
-              <img src="src/assets/mision_us.jpeg"   alt='grupo informáticos'>
+              <img src="/src/assets/mision_us.jpeg"   alt='grupo informáticos'>
           </div>
         </div>
 

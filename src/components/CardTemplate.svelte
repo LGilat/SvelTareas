@@ -1,5 +1,7 @@
 <script>
-    
+    import { createEventDispatcher } from 'svelte';
+    import 'animate.css';
+
     export let tarea;
     let editmode=false;
     export let handleTransaction;
@@ -9,8 +11,12 @@
     // export let handleKeyPress;
     export let handleDeleteTransaction
     export let recargarDatosIndexedDB;
-
     
+    const dispatch = createEventDispatcher();
+
+    function handleShowModal(){
+      dispatch('show-modal');
+    }  
 
     function  toggleEditMode(e){
         editmode = !editmode;
@@ -31,14 +37,18 @@
     
 </script>
 
-<main>
-    <div class="card-tarea">
+<main class="animate__animated animate__flipInX">
+    <!-- svelte-ignore a11y-interactive-supports-focus -->
+    <!-- svelte-ignore a11y-click-events-have-key-events -->
+    <div class="card-tarea" role='button' on:click={handleShowModal}>
         {#if editmode}
+        <!-- svelte-ignore a11y-autofocus -->
         <input
             type="text"
             name="title"
             id="title"
             bind:value={tarea.titulo}
+            autofocus
             on:focusout={() => {
             handleTransaction(tarea);
             toggleEditMode();
@@ -51,7 +61,7 @@
             role="textbox"
             on:keypress={handleKeyPress}
             tabindex="0"
-            on:click={toggleEditMode}
+            on:click|stopPropagation={toggleEditMode}
         >
             {tarea.titulo}
         </div>
@@ -64,6 +74,7 @@
                    border border-gray-300"
             bind:value={tarea.categoria}
             on:change={() => handleTransaction(tarea)}
+            on:click|stopPropagation
         >
         {#each categorias as categoria}
             <option value={categoria}>{categoria}</option>
@@ -79,6 +90,7 @@
             id="terminada"
             bind:checked={tarea.terminada}
             on:change={() => handleTransaction(tarea)}
+            on:click|stopPropagation
         />
         <label for="prioridad">Prioridad</label>
         <select
@@ -86,6 +98,7 @@
             id="prioridad"
             bind:value={tarea.prioridad}
             on:change={() => handleTransaction(tarea)}
+            on:click|stopPropagation
         >
             {#each prioridades as prioridad}
             <option value={prioridad}>{prioridad}</option>
@@ -95,14 +108,14 @@
         <div class="button-action">
         <button
             class="button-remove"
-            on:click={() => {
+            on:click|stopPropagation={() => {
             handleDeleteTransaction(tarea, recargarDatosIndexedDB);
             }}
             type="button">Eliminar</button
         >
         <button
             class="button-update"
-            on:click={() => handleTransaction(tarea)}
+            on:click|stopPropagation={() => handleTransaction(tarea)}
             type="button">Actualizar</button
         >
         </div>
@@ -145,4 +158,3 @@
   }
 
 </style>
-

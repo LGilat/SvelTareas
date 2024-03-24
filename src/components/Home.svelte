@@ -1,5 +1,7 @@
 <script>
     // @ts-nocheck
+    
+    import 'animate.css';
     import {
       handleTransaction,
       agregarTarea,
@@ -7,23 +9,43 @@
     } from "../services/services";
   
     import {onMount} from 'svelte';
+    import { afterUpdate } from 'svelte';
+
+    import { fade } from 'svelte/transition';
+
+   
     import { categorias } from "../services/categorias";
     import { prioridades } from "../services/prioridades";
     import CardTarea from "./CardTemplate.svelte";
     import InputText from "./InputText.svelte";
     import Select from "./Select.svelte";
     import InputSearch from "./InputSearch.svelte";
-  
-   
+    import Modal from "./Modals/Modal.svelte";
   
 
     let showTaskEnd = false;
+    let showModal=false;
+    let isVisible = true;
+
     let opcionSelected='';
     let estado = 'alta';
     let estado_categoria='tecnologia';
     let searchItemTask='';
-  
-  
+    let selectedTarea;
+    let textareaValue='';
+    
+
+    // Función reactiva para restablecer textareaValue cuando showModal cambie de true a false
+    $: if (!showModal) {
+      textareaValue = '';
+    }
+
+    function handleFocus(e,tareas){
+      if(tareas.descripcion){
+        textareaValue=tareas.descripcion;
+      }
+    }
+   
     function handleclearSearchItemTask(){
       searchItemTask='';
     }
@@ -40,6 +62,23 @@
         searchItemTask=e.target.value;
       }
     }
+
+  
+    afterUpdate(() => {
+        // Esta función se ejecuta después de cada actualización del componente
+        // Verificar si el modal está visible y escuchar el evento transitionend si es así
+        if (showModal) {
+          const modalContent = document.querySelector('#textarea-modal');
+         
+            if (modalContent) {
+                modalContent.focus();
+            }
+        }
+    });
+
+
+
+
   
     function recargarDatosIndexedDB() {
       let openRequest = indexedDB.open("TareasDB", 1);
@@ -84,15 +123,35 @@
   
 
   
-  <main>
+  <main class="pepino">
+    <!-- <button on:click={() => isVisible = !isVisible}>
+      Toggle Visibility
+    </button>
+    {#if isVisible}
+      <div transition:fade   style="display: {isVisible ? 'block' : 'none'}">
+        Este div utiliza una transición fade.
+      </div>
+    {/if} -->
+    <div style="">
+      <h1 class="title-header">TASKS</h1>
+      <h2 class="subtitle">Organiza tus tareas con eficiencia
+        y haz más en menos tiempo</h2>
+
+        <h3>
+          Gestiona tus tareas con facilidad
+          para un día más productivo
+        </h3>
+    </div>
+
     <form
-      class="form-border"
+      class="form-border animate__animated animate__backInRight"
       on:submit={(e) => {
         handleAgregarTarea(e, recargarDatosIndexedDB);
       }}
     >
       
-      <InputText mensaje='Titulo de la tarea' />
+      <InputText     
+        mensaje='Titulo de la tarea' />
       <br />
   
       <Select 
@@ -127,7 +186,7 @@
           handleKeypressEnterSearchInput={handleKeypressEnterSearchInput}
           searchItemTask={searchItemTask}
           handleclearSearchItemTask={handleclearSearchItemTask}
-        />
+      />
         
     </div>
     <div class="boxoptions">
@@ -155,11 +214,12 @@
   
     <br />
     <br />
-    <div class="container">
+    <div  class="container">
       {#each tareas as tarea (tarea.idtareas)}
         {#if opcionSelected === 'completed'}
           {#if tarea.terminada}
             <CardTarea 
+             
               tarea={tarea}
               handleTransaction={handleTransaction}
            
@@ -191,7 +251,7 @@
               <CardTarea 
                 tarea={tarea}
                 handleTransaction={handleTransaction}
-               
+              
                 categorias = {categorias}
                 prioridades = {prioridades}
                
@@ -220,6 +280,7 @@
           <CardTarea 
             tarea={tarea}
             handleTransaction={handleTransaction}
+            on:show-modal={ () => { (showModal = true); selectedTarea=tarea; } }
             
             categorias = {categorias}
             prioridades = {prioridades}
@@ -227,16 +288,94 @@
             handleDeleteTransaction = {handleDeleteTransaction}
             recargarDatosIndexedDB = {recargarDatosIndexedDB}
           /> 
-  
         {/if}
       {/each}
-  
-  
-  
     </div>
+
+    <Modal   bind:showModal>
+      <h2 slot="header">
+        Modal
+        <small><em>adjective</em> modal \ˈmō-dəl\</small>
+      </h2>
+      <h2 class="mt-2 font-normal">     
+        {selectedTarea ? selectedTarea.titulo : "Sin título"}
+        
+      </h2> 
+      
+      <form  class="form-description" 
+      
+        on:submit|preventDefault={ ()=> { 
+            selectedTarea.descripcion = textareaValue;  
+            handleTransaction(selectedTarea); 
+              // Espera 1 segundo (1000 milisegundos) antes de establecer showModal a false
+            setTimeout(() => {
+              (showModal = false);
+            }, 400);
+             }} >
+       
+        <!-- svelte-ignore a11y-autofocus -->
+        <textarea  
+             id="textarea-modal"
+            class="block p-2.5 w-full 
+                   text-sm text-gray-900 bg-gray-50
+                   rounded-lg border border-gray-300
+                   focus:ring-blue-500 focus:border-blue-500
+                  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
+                  dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            rows="5"
+            autofocus
+            placeholder={ "Ingrese una descripción detallada de la tarea..."}
+            on:focus={(e) => { handleFocus(e,selectedTarea)}}
+            bind:value={textareaValue} required></textarea>
+
+        <div class="content-center">
+          <button 
+              class="text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 
+                      hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300
+                     dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center
+                      me-2 mb-2 mt-4 w-3/12" type="submit" >
+              Guardar
+          </button>
+        </div>
+      </form>
+      <a href="https://www.merriam-webster.com/dictionary/modal" >merriam-webster.com</a>
+    </Modal>
+
+
   </main>
+   
   
   <style>
+
+    .subtitle{
+      font-size: small;
+      margin-top: 1rem;
+      padding-right: 10rem;
+      font-weight: 800;
+    }
+
+    h3 {
+      font-size: x-small;
+      padding-right: 12rem;
+      font-weight: 600;
+    }
+    
+    main {
+      margin-top: 0;
+    }
+    
+    
+    .title-header{
+      font-weight: 900;
+      padding: 7rem 0 0.2rem 9rem;
+      width: 80%;
+      font-size: 5rem;
+    }
+
+    .pepino{
+      background-image: url("/src/assets/cabecera_webtarea2.png");
+      background-repeat: no-repeat;
+    }
     .form-border {
       background-color: rgba(228, 228, 228, 0.123);
       border: 1px solid black;
@@ -246,7 +385,16 @@
       color: black;
       font-weight: bolder;
       max-width: 55vh;
-      margin: 0 auto;
+      margin: 14rem auto 1rem auto;
+    }
+
+
+    .form-description {
+      display: flex;
+      flex-direction: column;
+      gap: 2;
+      padding: 1em;
+      width: 32em;
     }
   
     
@@ -276,6 +424,8 @@
     .input-searchtask{
       margin-bottom: 1.2rem;
     }
+
+   
   
   </style>
   
