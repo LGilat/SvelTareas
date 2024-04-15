@@ -123,7 +123,7 @@
   
 
   
-  <main class="pepino">
+  <main class="">
     <!-- <button on:click={() => isVisible = !isVisible}>
       Toggle Visibility
     </button>
@@ -132,7 +132,7 @@
         Este div utiliza una transición fade.
       </div>
     {/if} -->
-    <div class=" min-h-[550px]">
+    <div class=" pepino min-h-[280px]">
       <h1 class="title-header">TASKS</h1>
       <h2 class="subtitle">Organiza tus tareas con eficiencia
         y haz más en menos tiempo</h2>
@@ -150,25 +150,31 @@
       }}
     >
       
-      <InputText     
-        mensaje='Titulo de la tarea' />
-      <br />
-  
-      <Select 
-        labelfor='categoria'
-        titulo = 'Categorias'
-        name='categoria'
-        id='categoria'
-        elementos = {categorias} />
-
-      <br />
-
-      <Select 
-        labelfor='prioridad'
-        titulo = 'Prioridades'
-        name='prioridad'
-        id='prioridad'
-        elementos = {prioridades} />
+       
+        <input  type="text" 
+                name="titulo" 
+                id="titulo"
+    
+                required 
+                placeholder="@Titulo de la tarea" 
+                class="w-2/4 inline rounded-xl border border-collapse
+                        p-2 ml-9"
+        >     
+      <div class="select-box">
+          <select  name="categoria" id="categoria" class="select-box">
+              {#each categorias  as categoria}
+                  <option value={categoria}> {categoria}</option>
+               {/each}
+          </select>
+      </div>
+     
+      <div class="select-box-alt">
+          <select  name="prioridad" id="prioridad" class="">
+              {#each prioridades  as prioridad}
+                  <option value={prioridad}> {prioridad}</option>
+               {/each}
+          </select>
+      </div>
   
       <div class="button-form">
         <button type="submit">Enviar</button>
@@ -177,6 +183,8 @@
   
     <br />
     <br />
+
+    <!-- 
     <div class="input-searchtask flex items-center justify-center">
       
       <InputSearch 
@@ -188,8 +196,9 @@
           handleclearSearchItemTask={handleclearSearchItemTask}
       />
         
-    </div>
-    <div class="boxoptions">
+    </div> -->
+
+   <!--  <div class="boxoptions">
       <button type="button" class={ ( opcionSelected === 'categoria' ) ? 'pulsado' : '' } on:click={ (e) => handleOptionTaskSelected('categoria')}> Task category</button>
       <button type="button" class={ ( opcionSelected === 'completed' ) ? 'pulsado' : '' } on:click={ (e) => handleOptionTaskSelected('completed')}> Task end</button>
       <button type="button" class={ ( opcionSelected === 'prioridad' ) ? 'pulsado' : '' } on:click={ (e) => handleOptionTaskSelected('prioridad')}> Task highpriority</button>
@@ -210,7 +219,7 @@
         </select>
       </div>
   
-    </div>
+    </div> -->
   
     <br />
     <br />
@@ -378,22 +387,32 @@
       margin: auto; /* Centrar el elemento horizontalmente */
     }
 
-    .pepino{
+    /* .pepino{
       background-image: url("/src/assets/cabecera_webtarea2.png");
       background-repeat: no-repeat;
-      background-size: 100% 24%;
+      background-size: 100% 32%;
       
+    } */
+
+    .pepino{
+        background-color: dodgerblue;
     }
+
+
     .form-border {
-      background-color: rgba(228, 228, 228, 0.123);
-      border: 1px solid black;
-      border-radius: 10px;
-      box-shadow: 1px 1px lightblue;
-      padding: 1.2rem;
-      color: black;
-      font-weight: bolder;
-      max-width: 55vh;
-      margin: 2rem auto 1rem auto;
+        
+        border: 2px solid rgb(27, 49, 63);
+        border-radius: 25px;
+        box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.5);
+        
+        
+        color: black;
+        font-weight: bolder;
+        margin: 0 auto;
+        margin-top: 1rem;
+        padding: 1rem;
+        width: 75%;
+        text-align: left;
     }
 
 
@@ -408,11 +427,77 @@
     
   
     .button-form {
-      margin-top: 1.2rem;
-      text-align: right;
+        display: inline;
+        margin-top: 1.2rem;
+        text-align: center;
+        padding: 10px 20px;
+        background-color: rgb(100, 100, 100); /* Fondo del botón */
+        border: none;
+        border-radius: 5px;
+        color: #fff; /* Color del texto */
+        font-size: 16px;
+        cursor: pointer;
+        /* Agregando efecto de sombra al botón */
+        box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
     }
-  
-    .pulsado {
+
+     /* Estilo del botón al pasar el cursor sobre él */
+    .button-form:hover {
+        background-color: rgb(80, 80, 80); /* Cambia el color al pasar el cursor */
+    }
+
+    /* Estilo del botón al hacer clic */
+    .button-form:active {
+        box-shadow: none; /* Elimina la sombra al hacer clic */
+    }
+
+
+
+    /* Estilos para el primer select */
+    .select-box {
+        position: relative;
+        display: inline-block;
+    }
+
+    .select-box select {
+        padding: 6px;
+        width: 200px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M7 10l5 5 5-5z" fill="gray"/></svg>');
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+    }
+
+    /* Estilos para el segundo select */
+    .select-box-alt {
+        position: relative;
+        display: inline-block;
+    }
+
+    .select-box-alt select {
+        padding: 6px;
+        width: 200px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        background-color: #f0f0f0;
+    }
+
+    .select-box-alt select:focus {
+        outline: none;
+        border-color: dodgerblue;
+        box-shadow: 0 0 5px dodgerblue;
+    }
+    
+/*     .pulsado {
       background-color: darkgrey;
       border: 1px dashed black;
     }
@@ -431,9 +516,10 @@
   
     .input-searchtask{
       margin-bottom: 1.2rem;
-    }
+    } */
 
    
   
   </style>
   
+

@@ -19,11 +19,17 @@ h1 {
 }
 
 #app {
-  width: 1440px;
+  
   text-align: center;
   border: 15px solid #242424;
   border-radius: var(--border-radius);
   margin: 0 auto;
+}
+
+body{
+  
+  background-size: cover;
+  background-color: whitesmoke;
 }
 
 button {
@@ -59,7 +65,7 @@ button:focus-visible {
 }
 
 nav {
-  position: relative;
+  /* position: relative; */
   display: flex;
   padding: 0;
   background: var(--bg-2);
@@ -83,4 +89,5 @@ nav a[aria-current='true'] {
   justify-content: center;
   flex-wrap: wrap;
   gap: 2em;
+  margin: 0 auto; 
 }

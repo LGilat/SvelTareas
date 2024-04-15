@@ -88,7 +88,7 @@ onMount( () =>{
 
 {#if vistatablas }
     <table class="animate__animated animate__backInUp table-fixed w-3/4 text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 mt-10 mb-10">
-        <thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
+        <thead class="text-xs text-gray-700 uppercase bg-cyan-400 dark:bg-gray-700 dark:text-gray-400">
             <tr >
                 <th scope="col" class="px-6 py-3">Titulo</th>
                 <th scope="col" class="px-6 py-3">Categoria</th>

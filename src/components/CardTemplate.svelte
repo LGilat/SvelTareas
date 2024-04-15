@@ -125,8 +125,10 @@
 <style>
 
 .card-tarea {
-    border: 2px solid burlywood;
+    background-color: whitesmoke;
+    border: 5px solid rgb(27, 49, 63);
     border-radius: 25px;
+    box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
     margin-bottom: 3rem;
     padding: 1rem;
   }
